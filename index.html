@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ryley P. Nathaniel</title>
+    <style>
+        /* --- Design System & Reset --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            padding-top: 140px; /* Space for the persistent header */
+            transition: padding 0.3s ease;
+        }
+
+        /* --- Persistent Header --- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        /* Nav Headshot (Shrunk state by default for subpages) */
+        .nav-avatar-container {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: all 0.5s ease;
+        }
+
+        .nav-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #0073e6;
+            transition: all 0.5s ease;
+        }
+
+        /* Right-Justified Dropdown Navigation */
+        .nav-dropdown-container {
+            margin-left: auto;
+        }
+
+        select {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            background-color: white;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        select:focus {
+            border-color: #0073e6;
+        }
+
+        /* --- Page Sections Base --- */
+        .page-section {
+            display: none; /* Hidden by default */
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page-section.active {
+            display: block; /* Show active page */
+        }
+
+        h1, h2 {
+            color: #222;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            border-bottom: 2px solid #0073e6;
+            padding-bottom: 5px;
+            display: inline-block;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        /* --- HOMEPAGE SPECIFIC (Big Headshot State) --- */
+        body.homepage-active {
+            padding-top: 60px; /* Less top padding needed since hero is big */
+        }
+
+        body.homepage-active header {
+            background-color: transparent;
+            box-shadow: none;
+            height: auto;
+            position: relative;
+            padding-top: 40px;
+        }
+
+        /* When homepage is active, force the headshot down into the hero section */
+        body.homepage-active .nav-avatar-container {
+            position: relative;
+            left: 0;
+            transform: none;
+            margin: 0 auto;
+            text-align: center;
+            display: block;
+            width: 100%;
+        }
+
+        body.homepage-active .nav-avatar {
+            width: 220px;
+            height: 220px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        /* Layout adjustment for dropdown when homepage is active */
+        body.homepage-active .nav-dropdown-container {
+            position: absolute;
+            top: 40px;
+            right: 10%;
+        }
+
+        .homepage-content {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .cv-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 30px;
+            background-color: #0073e6;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .cv-link:hover {
+            background-color: #0059b3;
+        }
+
+        /* --- Content Layout Helpers --- */
+        .item-card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .item-card h3 {
+            margin-bottom: 5px;
+            color: #0073e6;
+        }
+
+        .meta {
+            font-style: italic;
+            color: #666;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        /* --- Animation --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="homepage-active">
+
+    <header>
+        <div class="nav-avatar-container">
+            <img src="C:\Users\ryleyn\Documents\1headshots\Ryley_Nathaniel _002.jpg" alt="Professional Headshot" class="nav-avatar" id="headshot">
+            <div id="nav-name" style="text-align: center; font-weight: bold; font-size: 0.9rem; margin-top: 5px; color: #333;">RYLEY</div>
+        </div>
+
+        <div class="nav-dropdown-container">
+            <select id="page-navigator" onchange="navigateToPage(this.value)">
+                <option value="homepage">Homepage</option>
+                <option value="about">About Me</option>
+                <option value="blog">Blog</option>
+                <option value="research">Research</option>
+                <option value="teaching">Teaching</option>
+                <option value="presentations">Presentations</option>
+                <option value="awards">Awards</option>
+                <option value="contact">Contact</option>
+            </select>
+        </div>
+    </header>
+
+    <style>
+        body.homepage-active .nav-name {
+            opacity: 0 !important;
+            pointer-events: none;
+        }
+    </style>
+
+    <section id="homepage" class="page-section active">
+        <div class="homepage-content">
+            <h1>Ryley P. Nathaniel</h1>
+            <h2>PhD Candidate</h2>
+            <p style="font-size: 1.2rem; color: #555;">Department of Psychology | York University</p>
+            <p style="max-width: 600px; margin: 20px auto;">
+                Welcome! I am a researcher specializing in groundbreaking topics. Explore my work using the navigation menu at the top right.
+            </p>
+            <a href="C:\Users\ryleyn\Documents\1cv\website\RyleyNathaniel_CV.pdf" class="cv-link" target="_blank">Download Curriculum Vitae (CV)</a>
+        </div>
+    </section>
+
+    <section id="about" class="page-section">
+        <h2>About Me</h2>
+        <p>Write your detailed biography here. Talk about your academic journey, what sparked your interest in your field, and your long-term career aspirations.</p>
+        <p>You can add multiple paragraphs detailing your background, foundational studies, and personal motivations outside of your core research papers.</p>
+    </section>
+
+    <section id="blog" class="page-section">
+        <h2>Blog</h2>
+        <div class="item-card">
+            <h3>Reflections on My Latest Fieldwork</h3>
+            <div class="meta">Published on June 1, 2026</div>
+            <p>A quick summary or introductory paragraph of your thoughts, field notes, or musings on academic life...</p>
+        </div>
+        <div class="item-card">
+            <h3>Navigating the Qualifying Exams</h3>
+            <div class="meta">Published on March 14, 2026</div>
+            <p>Some advice for younger PhD students embarking on their qualifying exams...</p>
+        </div>
+    </section>
+
+    <section id="research" class="page-section">
+        <h2>Research</h2>
+        <p>My research lies at the intersection of Sub-field A and Sub-field B.</p>
+        <div class="item-card">
+            <h3>Journal Publication Title</h3>
+            <div class="meta">Journal of Examples, 2025 | Authors: Your Name, Advisor Name</div>
+            <p>Abstract or brief description of the paper findings and impact.</p>
+        </div>
+        <div class="item-card">
+            <h3>Working Paper / Dissertation Chapter</h3>
+            <div class="meta">In Progress</div>
+            <p>Brief summary of what you are currently working on.</p>
+        </div>
+    </section>
+
+    <section id="teaching" class="page-section">
+        <h2>Teaching Experience</h2>
+        <div class="item-card">
+            <h3>Teaching Assistant - Course PSYC 4175: Advanced Community-Based Applied Research</h3>
+            <div class="meta">York University | Fall 2025/Winter 2026</div>
+            <p>- Guided students through individual, community-based, specialized honours theses</p>
+            <p>- Lead three tutorials, including one about the use of R for data analyses</p>
+            <p>- Attended every class to provide in-class office hours</p>
+            <p>- Marked students' methodological presentations and final APA-style theses</p>
+        </div>
+        <div class="item-card">
+            <h3>Teaching Assistant - Course PSYC 2130: Personality</h3>
+            <div class="meta">York University | Winter 2025</div>
+            <p>- Invigilated and marked three exams, including a final</p>
+            <p>- Created Powerpoints to lead two tutorials with co-teaching-assistant</p>
+        </div>
+        <div class="item-card">
+            <h3>Teaching Assistant - Course PSYC 4180: Critical Thinking in Psychology</h3>
+            <div class="meta">York University | Fall 2024</div>
+            <p>- Marked assignments including presentations, proposals, SPSS write-ups and essays.</p>
+            <p>- Provided one-on-one support to students who requested office hour meetings</p>
+            <p>- Promptly responded to student emails</p>
+            <p>- Communicated with the professor when students required additional support</p>
+        </div>
+    </section>
+
+    <section id="presentations" class="page-section">
+        <h2>Presentations & Talks</h2>
+        <div class="item-card">
+            <h3>CSBBCS Conference and CIAN Satellite</h3>
+            <div class="meta">Oral Poster Presentation | Toronto, ON | 2026</div>
+            <p>Presented findings on our latest dataset to an audience of global peers.</p>
+        </div>
+        <div class="item-card">
+            <h3>Canadian Association for Neuroscience (CAN) Conference</h3>
+            <div class="meta">Oral Poster Presentation | Montreal, QC | 2026</div>
+        </div>
+        <div class="item-card">
+            <h3>Society for Neuroscience (SfN) Conference</h3>
+            <div class="meta">Oral Poster Presentation | San Diego, USA | 2025</div>
+        </div>
+        <div class="item-card">
+            <h3>Canadian Association for Neuroscience (CAN) Conference</h3>
+            <div class="meta">Oral Poster Presentation | Toronto, ON | 2025</div>
+        </div>
+        <div class="item-card">
+            <h3>CVR-CIAN Conference (York University)</h3>
+            <div class="meta">Oral Poster Presentation | Toronto, ON | 2025</div>
+        </div>
+        <div class="item-card">
+            <h3>Insights and challenges of using eye-tracking in research</h3>
+            <div class="meta">Invited Speaker | VPixx Technologies | 2025</div>
+            <p>Gave an hour-long talk to VPixx researchers detailing limitations of VPixx Technologies for improvement</p>
+        </div>
+        <div class="item-card">
+            <h3>Becoming a graduate student</h3>
+            <div class="meta">Invited Speaker | York University | 2025</div>
+            <p>Gave an hour-long talk to undergraduate students at York University about the transition from undergraduate to graduate programs</p>
+        </div>      
+        <div class="item-card">
+            <h3>Natural Sciences and Engineering Research Council of Canada (NSERC)</h3>
+            <div class="meta">Oral Poster Presentation | Toronto, ON | 2024</div>
+        </div>
+        <div class="item-card">
+            <h3>Connected Minds Trainee Retreat (York University)</h3>
+            <div class="meta">Oral Poster Presentation | Toronto, ON | 2025</div>
+        </div>
+        <div class="item-card">
+            <h3>Society for Neuroscience (SfN) Conference</h3>
+            <div class="meta">Oral Poster Presentation | Chicago, USA | 2024</div>
+        </div>
+        <div class="item-card">
+            <h3>Natural Sciences and Engineering Research Council of Canada (NSERC)</h3>
+            <div class="meta">Oral Poster Presentation | Toronto, ON | 2023</div>
+        </div>
+    </section>
+
+    <section id="awards" class="page-section">
+        <h2>Awards & Fellowships</h2>
+        <ul>
+            <li style="margin-bottom: 10px;"><strong>Connected Minds PhD Scholarship</strong> (2026-2030) - York University</li>
+            <li style="margin-bottom: 10px;"><strong>CVR-VISTA Doctoral Entrance Award (awarded, declined*)</strong> (2026-2028) - Center for Vision Research (York University)</li>
+            <li style="margin-bottom: 10px;"><strong>CAN-ACN Professional Development Travel Award</strong> (2026) - Canadian Association of Neuroscience (CAN-ACN)</li>
+            <li style="margin-bottom: 10px;"><strong>Summer Graduate Fellowship</strong> (2025, 2026) - York University</li>
+            <li style="margin-bottom: 10px;"><strong>Winter Graduate Fellowship</strong> (2025, 2026) - York University</li>
+            <li style="margin-bottom: 10px;"><strong>Fall Graduate Fellowship</strong> (2024, 2025) - York University</li>
+            <li style="margin-bottom: 10px;"><strong>Connected Minds Master's Scholarship</strong> (2024-2026) - York University</li>
+            <li style="margin-bottom: 10px;"><strong>NSERC Undergraduate Student Research Award</strong> (2023, 2024) - York University</li>
+            <li style="margin-bottom: 10px;"><strong>Canada SROP Student Research Award</strong> (2023) - University of Toronto</li>
+            <li style="margin-bottom: 10px;"><strong>Visionary Talk Science Inspire Award</strong> (2022) - Visions of Science</li>
+
+        </ul>
+
+        <!-- Acknowledgements / Sponsors Section -->
+        <h2 style="margin-top: 40px; margin-bottom: 20px;">Acknowledgements & Sponsors</h2>
+        <p style="color: #666; font-size: 0.95rem; margin-bottom: 20px;">My research and academic pursuits are generously supported by:</p>
+        
+        <div style="display: flex; flex-wrap: wrap; gap: 30px; align-items: center; justify-content: flex-start; margin-top: 20px;">
+            <!-- Sponsor Logo 1 -->
+            <img src="C:\Users\ryleyn\Documents\1cv\website\LOGO-yorku.png" alt="Logo 1 - YorkU" style="max-height: 60px; max-width: 150px; object-fit: contain; filter: grayscale(20%); opacity: 0.9; transition: all 0.3s;">
+            
+            <!-- Sponsor Logo 2 -->
+            <img src="C:\Users\ryleyn\Documents\1cv\website\LOGO-connectedminds.png" alt="Logo 2 - Connected Minds" style="max-height: 60px; max-width: 150px; object-fit: contain; filter: grayscale(20%); opacity: 0.9; transition: all 0.3s;">
+            
+            <!-- Sponsor Logo 3 -->
+            <img src="C:\Users\ryleyn\Documents\1cv\website\LOGO-cian.png" alt="Logo 3 - CIAN" style="max-height: 60px; max-width: 150px; object-fit: contain; filter: grayscale(20%); opacity: 0.9; transition: all 0.3s;">
+
+            <!-- Sponsor Logo 4 -->
+            <img src="C:\Users\ryleyn\Documents\1cv\website\LOGO-cvr.jpg" alt="Logo 4 - CVR" style="max-height: 60px; max-width: 150px; object-fit: contain; filter: grayscale(20%); opacity: 0.9; transition: all 0.3s;">
+
+            <!-- Sponsor Logo 5 -->
+            <img src="C:\Users\ryleyn\Documents\1cv\website\LOGO-nserc.png" alt="Logo 5 - NSERC" style="max-height: 60px; max-width: 150px; object-fit: contain; filter: grayscale(20%); opacity: 0.9; transition: all 0.3s;">
+
+            <!-- Sponsor Logo 6 -->
+            <img src="C:\Users\ryleyn\Documents\1cv\website\LOGO-canconference.png" alt="Logo 6 - CAN-ACN" style="max-height: 60px; max-width: 150px; object-fit: contain; filter: grayscale(20%); opacity: 0.9; transition: all 0.3s;">
+
+            <!-- Sponsor Logo 7 -->
+            <img src="C:\Users\ryleyn\Documents\1cv\website\LOGO-srop.jpg" alt="Logo 6 - SROP UofT" style="max-height: 60px; max-width: 150px; object-fit: contain; filter: grayscale(20%); opacity: 0.9; transition: all 0.3s;">
+
+            <!-- Sponsor Logo 8 -->
+            <img src="C:\Users\ryleyn\Documents\1cv\website\LOGO-visionsofscience.png" alt="Logo 6 - Visions of Science" style="max-height: 60px; max-width: 150px; object-fit: contain; filter: grayscale(20%); opacity: 0.9; transition: all 0.3s;">
+        </div>
+
+    </section>
+
+   <section id="contact" class="page-section">
+        <h2>Contact</h2>
+        <p>Feel free to reach out via email or connect with me on professional platforms.</p>
+        <p><strong>YorkU Email:</strong> <a href="mailto:ryleyn@yorku.ca" style="color: #0073e6; text-decoration: none;">ryleyn@yorku.ca</a></p>   
+        <p><strong>Personal Email:</strong> <a href="mailto:ryleynath@gmail.com" style="color: #0073e6; text-decoration: none;">ryleynath@gmail.com</a></p>
+        <p><strong>LinkedIn:</strong> <a href="www.linkedin.com/in/ryleyn" target="_blank" style="color: #0073e6; text-decoration: none;">www.linkedin.com/in/ryleyn</a></p>
+        <p><strong>Office:</strong> Behavioural Science Building (BSB), Room 368</p>
+        <p><strong>Mailing Address:</strong> Department of Psychology, York University, Toronto, Ontario, M3J 1P3</p>
+    </section> 
+
+    <script>
+        function navigateToPage(targetId) {
+            // 1. Hide all page sections
+            const sections = document.querySelectorAll('.page-section');
+            sections.forEach(section => section.classList.remove('active'));
+    
+            // 2. Show the targeted page section
+            const activeSection = document.getElementById(targetId);
+            if (activeSection) {
+                activeSection.classList.add('active');
+            }
+    
+            // 3. Handle headshot states
+            if (targetId === 'homepage') {
+                document.body.classList.add('homepage-active');
+            } else {
+                document.body.classList.remove('homepage-active');
+            }
+    
+            // 4. Update dropdown selector visual state
+            document.getElementById('page-navigator').value = targetId;
+    
+            // 5. SILENTLY update the URL hash so it does not trigger 'hashchange' loop
+            if (window.location.hash.replace('#', '') !== targetId) {
+                history.replaceState(null, null, '#' + targetId);
+            }
+        }
+    
+        // Handles initial page load and user hard refreshes (F5)
+        window.addEventListener('load', () => {
+            const savedPage = window.location.hash.replace('#', '');
+            if (savedPage && document.getElementById(savedPage)) {
+                navigateToPage(savedPage);
+            } else {
+                navigateToPage('homepage');
+            }
+        });
+    
+        // Handles browser forward/backward navigation arrows properly
+        window.addEventListener('popstate', () => {
+            const savedPage = window.location.hash.replace('#', '') || 'homepage';
+            if (document.getElementById(savedPage)) {
+                navigateToPage(savedPage);
+            }
+        });
+
+    </script>
+</body>
+</html>
